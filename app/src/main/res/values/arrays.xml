@@ -8,11 +8,34 @@
         <item>Самара</item>
     </string-array>
 
-    <integer-array name="coatofarms_imgs">
-        <item>@drawable/msc</item><!-- герб Москвы -->
-        <item>@drawable/spb</item><!-- герб Санкт-Петербурга -->
-        <item>@drawable/ebrg</item><!-- герб Екатеринбурга -->
-        <item>@drawable/nsk</item><!-- герб Новосибирска -->
-        <item>@drawable/sam</item><!-- герб Самары -->
-    </integer-array>
+
+    <string-array name="cities_temp">
+        <item>21</item>
+        <item>17</item>
+        <item>23</item>
+        <item>19</item>
+        <item>25</item>
+    </string-array>
+    <string-array name="cities_hum">
+        <item>75%</item>
+        <item>95%</item>
+        <item>50%</item>
+        <item>40%</item>
+        <item>80%</item>
+    </string-array>
+    <string-array name="cities_pressure">
+        <item>760мм</item>
+        <item>750мм</item>
+        <item>755мм</item>
+        <item>766мм</item>
+        <item>780мм</item>
+    </string-array>
+    <string-array name="cities_wind">
+        <item>1 &#8211; 3 м/с</item>
+        <item>5 &#8211; 7 м/с</item>
+        <item>2 &#8211; 4 м/с</item>
+        <item>0 &#8211; 1 м/с</item>
+        <item>4 &#8211; 6 м/с</item>
+    </string-array>
+
 </resources>

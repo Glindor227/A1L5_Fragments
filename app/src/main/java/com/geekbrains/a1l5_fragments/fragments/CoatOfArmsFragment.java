@@ -1,12 +1,14 @@
 package com.geekbrains.a1l5_fragments.fragments;
 
-import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.geekbrains.a1l5_fragments.R;
 
@@ -28,16 +30,33 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        String[] nameArray = getResources().getStringArray(R.array.cities);
+        String[] tempArray = getResources().getStringArray(R.array.cities_temp);
+        String[] humArray = getResources().getStringArray(R.array.cities_hum);
+        String[] pressureArray = getResources().getStringArray(R.array.cities_pressure);
+        String[] windArray = getResources().getStringArray(R.array.cities_wind);
+        int index = getIndex();
+        if(tempArray.length<index){
+            return;
+        }
+        ((TextView)view.findViewById(R.id.cityName)).setText(nameArray[index]);
+        ((TextView)view.findViewById(R.id.tempValue)).setText(tempArray[index]);
+        ((TextView)view.findViewById(R.id.humValue)).setText(humArray[index]);
+        ((TextView)view.findViewById(R.id.pressureValue)).setText(pressureArray[index]);
+        ((TextView)view.findViewById(R.id.vindValue)).setText(windArray[index]);
+        ((ImageView)view.findViewById(R.id.overcastValue)).setImageResource(R.drawable.overcast1);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Определить какой герб надо показать, и показать его
-        ImageView coatOfArms = new ImageView(getActivity());
 
-        // Получить из ресурсов массив указателей на изображения гербов
-        TypedArray imgs = getResources().obtainTypedArray(R.array.coatofarms_imgs);
-        // Выбрать по индексу подходящий
-        coatOfArms.setImageResource(imgs.getResourceId(getIndex(), -1));
-        return coatOfArms;     // Вместо макета используем сразу картинку
+
+        return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
 }
