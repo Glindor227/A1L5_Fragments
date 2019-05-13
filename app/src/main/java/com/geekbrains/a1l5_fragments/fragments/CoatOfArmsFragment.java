@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.geekbrains.a1l5_fragments.R;
 
+import java.util.Objects;
+
 public class CoatOfArmsFragment extends Fragment {
     public static CoatOfArmsFragment create(int index) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
@@ -25,8 +27,7 @@ public class CoatOfArmsFragment extends Fragment {
 
     // Получить индекс из списка (фактически из параметра)
     public int getIndex() {
-        int index = getArguments().getInt("index", 0);
-        return index;
+        return Objects.requireNonNull(getArguments()).getInt("index", 0);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
