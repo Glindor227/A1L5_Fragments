@@ -3,7 +3,7 @@
     <string name="cityLabel">Город:  </string>
     <string name="cityName">Москва</string>
 
-    <string name="tempLabel">Температура:  </string>
+    <string name="tempLabel">Температура:                           </string>
     <string name="overcastLabel">Облачность:  </string>
     <string name="humLabel">Влажность:  </string>
     <string name="pressureLabel">Давление:  </string>
