@@ -23,4 +23,10 @@
     <string name="cityHelp">Введите имя города</string>
     <string name="to_second_activity">К погоде</string>
     <string name="empty">Empty</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_setting_weather">SettingWeatherActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="Exec">Применить</string>
 </resources>
