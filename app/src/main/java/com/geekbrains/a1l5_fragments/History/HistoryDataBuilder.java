@@ -8,16 +8,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class HistoryDataBuilder {
+class HistoryDataBuilder {
     private Calendar cal;
     private int temp;
 
-    public HistoryDataBuilder() {
+    HistoryDataBuilder() {
         temp = 22;
         cal=Calendar.getInstance();
     }
 
-    public List<HistoryDataClass> buildFakeTemp(){
+    List<HistoryDataClass> buildFakeTemp(){
 
         List<HistoryDataClass> data2= new ArrayList<>();
         for (int i=0;i<10;i++){
@@ -26,7 +26,7 @@ public class HistoryDataBuilder {
         return data2;
     }
 
-    public HistoryDataClass addOneDay(){
+    HistoryDataClass addOneDay(){
         cal.add(Calendar.DATE,-1);
         temp += (int)(3- Math.random()*6);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");

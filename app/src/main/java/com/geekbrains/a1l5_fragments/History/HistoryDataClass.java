@@ -5,7 +5,7 @@ class HistoryDataClass {
     String time;
     String temp;
 
-    public HistoryDataClass(String time, String temp) {
+    HistoryDataClass(String time, String temp) {
         this.time = time;
         this.temp = temp;
     }
