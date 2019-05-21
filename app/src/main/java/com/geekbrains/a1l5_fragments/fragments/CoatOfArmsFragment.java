@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.geekbrains.a1l5_fragments.History.HistoryWeatherActivity;
+import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.WeatherParam;
 
@@ -38,7 +38,6 @@ public class CoatOfArmsFragment extends Fragment {
 
     public WeatherParam getWeatherParams() {
         Object oWP = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
-
         return (oWP instanceof WeatherParam)? (WeatherParam) oWP :null;
     }
 
@@ -56,7 +55,6 @@ public class CoatOfArmsFragment extends Fragment {
         if(param==null) {
             param = new WeatherParam(true, true, true, true);
             Log.d("Glin2","onViewCreated - new WeatherParam");
-
         }
 
         if(tempArray.length<index){
@@ -76,8 +74,6 @@ public class CoatOfArmsFragment extends Fragment {
             }
         });
 
-
-
         view.findViewById(R.id.llHum).setVisibility(param.isHum ? View.VISIBLE:View.INVISIBLE);
         ((TextView)view.findViewById(R.id.humValue)).setText(humArray[index]);
 
@@ -89,14 +85,11 @@ public class CoatOfArmsFragment extends Fragment {
 
         view.findViewById(R.id.llOvercast).setVisibility(param.isOver ? View.VISIBLE:View.INVISIBLE);
         ((ImageView)view.findViewById(R.id.overcastValue)).setImageResource(R.drawable.overcast1);
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 

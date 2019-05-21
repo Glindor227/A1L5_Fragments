@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.geekbrains.a1l5_fragments.MainActivity;
 import com.geekbrains.a1l5_fragments.R;
@@ -18,60 +19,48 @@ import com.geekbrains.a1l5_fragments.WeatherParam;
 
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingWeatherFragment extends Fragment {
 
-    private  CheckBox checkBox1;
-    private  CheckBox checkBox2;
-    private  CheckBox checkBox3;
-    private  CheckBox checkBox4;
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        // не получается сохранить, и востановить нажатые checkBox
-        if(savedInstanceState!=null){
-            checkBox1.setChecked(savedInstanceState.getBoolean("ch1",true));
-            checkBox2.setChecked(savedInstanceState.getBoolean("ch2",true));
-            checkBox3.setChecked(savedInstanceState.getBoolean("ch3",true));
-            checkBox4.setChecked(savedInstanceState.getBoolean("ch4",true));
-        }
-
-    }
+    private  CheckBox checkBoxHum;
+    private  CheckBox checkBoxOver;
+    private  CheckBox checkBoxPress;
+    private  CheckBox checkBoxWind;
+    static boolean isCheckHum=true,isCheckOver=true,isIsCheckPress=true,isIsCheckWind=true;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(savedInstanceState!=null)
-            Log.d("Glin1","SettingWeatherFragment onViewCreated =" + savedInstanceState.toString());
 
-        checkBox1 = view.findViewById(R.id.cbHumEnable);
-        checkBox2 = view.findViewById(R.id.cbOverEnable);
-        checkBox3 = view.findViewById(R.id.cbPressEnable);
-        checkBox4 = view.findViewById(R.id.cbWindEnable);
-
-        // не получается сохранить, и востановить нажатые checkBox
-        if(savedInstanceState!=null){
-            checkBox1.setChecked(savedInstanceState.getBoolean("ch1",true));
-            checkBox2.setChecked(savedInstanceState.getBoolean("ch2",true));
-            checkBox3.setChecked(savedInstanceState.getBoolean("ch3",true));
-            checkBox4.setChecked(savedInstanceState.getBoolean("ch4",true));
-        }
-
-
+        initCheckBox(view);
 
         view.findViewById(R.id.bSettingApply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isCheckHum = checkBoxHum.isChecked();
+                isCheckOver = checkBoxOver.isChecked();
+                isIsCheckPress = checkBoxPress.isChecked();
+                isIsCheckWind = checkBoxWind.isChecked();
                 Intent intent = new Intent();
-                intent.putExtra("WeatherParams", new WeatherParam(checkBox4.isChecked(),checkBox1.isChecked(),checkBox2.isChecked(),checkBox3.isChecked()));
+                intent.putExtra("WeatherParams",
+                        new WeatherParam(isIsCheckWind,isCheckHum,isCheckOver,isIsCheckPress));
                 intent.setClass(Objects.requireNonNull(getActivity()), MainActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    private void initCheckBox(@NonNull View view) {
+        checkBoxHum = view.findViewById(R.id.cbHumEnable);
+        checkBoxHum.setChecked(isCheckHum);
+
+        checkBoxOver = view.findViewById(R.id.cbOverEnable);
+        checkBoxOver.setChecked(isCheckOver);
+
+        checkBoxPress = view.findViewById(R.id.cbPressEnable);
+        checkBoxPress.setChecked(isIsCheckPress);
+
+        checkBoxWind = view.findViewById(R.id.cbWindEnable);
+        checkBoxWind.setChecked(isIsCheckWind);
     }
 
     @Override
@@ -79,15 +68,5 @@ public class SettingWeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting_weather, container, false);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-// не получается тут сохранить, а в другом месте востановить нажатые checkBox
-        outState.putBoolean("ch1", checkBox1.isChecked());
-        outState.putBoolean("ch2", checkBox2.isChecked());
-        outState.putBoolean("ch3", checkBox3.isChecked());
-        outState.putBoolean("ch4", checkBox4.isChecked());
-        super.onSaveInstanceState(outState);
     }
 }

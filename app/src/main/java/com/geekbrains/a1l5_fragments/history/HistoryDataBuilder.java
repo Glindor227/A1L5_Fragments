@@ -1,11 +1,10 @@
-package com.geekbrains.a1l5_fragments.History;
+package com.geekbrains.a1l5_fragments.history;
 
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 class HistoryDataBuilder {
@@ -18,7 +17,6 @@ class HistoryDataBuilder {
     }
 
     List<HistoryDataClass> buildFakeTemp(){
-
         List<HistoryDataClass> data2= new ArrayList<>();
         for (int i=0;i<10;i++){
             data2.add(addOneDay());
@@ -31,8 +29,5 @@ class HistoryDataBuilder {
         temp += (int)(3- Math.random()*6);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return new HistoryDataClass(df.format(cal.getTime()), temp +" С");
-
     }
-
-
 }

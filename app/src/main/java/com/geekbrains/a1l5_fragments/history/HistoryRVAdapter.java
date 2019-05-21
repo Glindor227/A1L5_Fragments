@@ -1,4 +1,4 @@
-package com.geekbrains.a1l5_fragments.History;
+package com.geekbrains.a1l5_fragments.history;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -35,7 +35,6 @@ public class HistoryRVAdapter extends RecyclerView.Adapter<HistoryRVAdapter.RVVi
         rvViewHolder.textViewTime.setText(data.get(i).time);
         rvViewHolder.textViewCity.setText(cityName);
         rvViewHolder.textViewTemp.setText(data.get(i).temp);
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.geekbrains.a1l5_fragments.History;
+package com.geekbrains.a1l5_fragments.history;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +23,6 @@ public class HistoryWeatherActivity extends AppCompatActivity {
         String cityName = intent.getStringExtra("City");
         historyDataBuilder = new HistoryDataBuilder();
         initRV(cityName);
-
     }
 
     private void initRV(String cityName) {
