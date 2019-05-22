@@ -7,30 +7,30 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
+import com.geekbrains.a1l5_fragments.CitiesRVAdapter;
 import com.geekbrains.a1l5_fragments.CoatOfArmsActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.WeatherParam;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 // Фрагмент выбора города из списка
 public class CitiesFragment extends Fragment {
-    private ListView listView;
-    private TextView emptyTextView;
+
     private Bundle saveBundle = null;
 
     boolean isExistCoatOfArms;  // Можно ли расположить рядом фрагмент с погодой
-    int currentPosition = 0;    // Текущая позиция (выбранный город)
+    public int currentPosition = 0;    // Текущая позиция (выбранный город)
     WeatherParam paramIs = new WeatherParam(true,true,true,true);
 
     // При создании фрагмента укажем его макет
@@ -44,10 +44,8 @@ public class CitiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(savedInstanceState!=null)
-            Log.d("Glin1",
-                    "CitiesFragment onViewCreated =" + savedInstanceState.toString());
-        initViews(view);
-        initList();
+            Log.d("Glin1","CitiesFragment onViewCreated =" + savedInstanceState.toString());
+        initList(view);
     }
 
     // activity создана, можно к ней обращаться. Выполним начальные действия
@@ -62,6 +60,7 @@ public class CitiesFragment extends Fragment {
         Log.d("Glin1","WeatherParam" + paramIs);
 
         this.saveBundle = savedInstanceState;
+        // Определение, можно ли будет расположить рядом герб в другом фрагменте
     }
 
     @Override
@@ -76,10 +75,9 @@ public class CitiesFragment extends Fragment {
             // Восстановление текущей позиции.
             currentPosition = saveBundle.getInt("CurrentCity", 0);
         }
-
         // Если можно нарисовать рядом герб, то сделаем это
         if (isExistCoatOfArms) {
-            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             showCoatOfArms();
         }
     }
@@ -91,100 +89,53 @@ public class CitiesFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    private void initViews(View view) {
-        listView = view.findViewById(R.id.cities_list_view);
-        emptyTextView = view.findViewById(R.id.cities_list_empty_view);
-        Button buttonSetting = view.findViewById(R.id.buttonSetting);
-        buttonSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSetting();
-            }
-        });
-    }
+    private void initList(View view){
+        //    private ListView listView;
+        RecyclerView listView = view.findViewById(R.id.cities_list_view);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(Objects.requireNonNull(getActivity()).getApplicationContext(),
+                LinearLayoutManager.VERTICAL, false);
 
-    private void initList() {
-        // Для того, чтобы показать список, надо задействовать адаптер.
-        // Такая конструкция работает для списков, например ListActivity.
-        // Здесь создаем из ресурсов список городов (из массива)
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()),
-                R.array.cities, android.R.layout.simple_list_item_activated_1);
+        final List<String> tempData =
+                new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.cities)));
+        final CitiesRVAdapter adapter = new CitiesRVAdapter(tempData,this);
+        listView.setLayoutManager(layoutManager);
         listView.setAdapter(adapter);
-        listView.setEmptyView(emptyTextView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentPosition = position;
-                showCoatOfArms();
-            }
-        });
     }
 
-    private void showSetting(){
-        if (isExistCoatOfArms) {
-            // Выделим текущий элемент списка
-//            listView.setItemChecked(currentPosition, true);
-
-            // Проверим, что фрагмент с настройками существует в activity
-            Fragment frag = Objects.requireNonNull(getFragmentManager())
-                    .findFragmentById(R.id.coat_of_arms);
-
-            // Если есть необходимость, то выведем герб
-            if ((frag instanceof SettingWeatherFragment)) {
-                return;
-            }
-            // Создаем новый фрагмент с текущей позицией для вывода герба
-            SettingWeatherFragment detail = new SettingWeatherFragment();
-            // Выполняем транзакцию по замене фрагмента
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.coat_of_arms, detail);  // замена фрагмента
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            //ft.addToBackStack(null);
-            ft.addToBackStack("Some_Key");
-            ft.commit();
-        } else {
-            // Если нельзя вывести герб рядом, откроем вторую activity
-            Intent intent = new Intent();
-            intent.setClass(Objects.requireNonNull(getActivity()), CoatOfArmsActivity.class);
-            intent.putExtra("type", 2);
-            startActivity(intent);
-        }
-    }
-
-    // Показать герб. Ecли возможно, то показать рядом со списком,
+    // Показать погоду. Ecли возможно, то показать рядом со списком,
     // если нет, то открыть вторую activity
-    private void showCoatOfArms() {
+    public void showCoatOfArms() {
         if (isExistCoatOfArms) {
             Log.d("Glin2","showCoatOfArms 1 "+paramIs.info());
-            // Выделим текущий элемент списка
-            listView.setItemChecked(currentPosition, true);
+            // Теперь это RecyclerView у него выделение показывется иначе
+//            listView.setItemChecked(currentPosition, true);
 
-            // Проверим, что фрагмент с гербом существует в activity
-            Fragment frag = Objects.requireNonNull(getFragmentManager()).findFragmentById(R.id.coat_of_arms);
+            Fragment frag = Objects.requireNonNull(getFragmentManager())
+                    .findFragmentById(R.id.coat_of_arms);
 
             // Если нет фрагмента
             // или не того типа
             // или того типа, но не с тем индексом
             if (!(frag instanceof CoatOfArmsFragment)
                     || ((CoatOfArmsFragment) frag).getIndex() != currentPosition) {
-                // Создаем новый фрагмент с текущей позицией для вывода герба
+                // Создаем новый фрагмент с текущей позицией для вывода погоды
                 CoatOfArmsFragment detail = CoatOfArmsFragment.create(currentPosition,paramIs);
 
                 // Выполняем транзакцию по замене фрагмента
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.coat_of_arms, detail);  // замена фрагмента
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                //ft.addToBackStack(null);
                 ft.addToBackStack("Some_Key");
                 ft.commit();
             }
         } else {
             Log.d("Glin2","showCoatOfArms 2 "+paramIs.info());
-            // Если нельзя вывести герб рядом, откроем вторую activity
+            // Если нельзя вывести погоду рядом, откроем вторую activity
             Intent intent = new Intent();
             intent.setClass(Objects.requireNonNull(getActivity()), CoatOfArmsActivity.class);
             // и передадим туда параметры
-            intent.putExtra("type", 1);
+            intent.putExtra("type", 1);//это погодв, а не настройка
             intent.putExtra("WeatherParams", paramIs);
             intent.putExtra("index", currentPosition);
             startActivity(intent);

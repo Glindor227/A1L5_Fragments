@@ -27,4 +27,6 @@
     <string name="action_settings">Settings</string>
     <string name="Exec">Применить</string>
     <string name="addDay">Показать еще день</string>
+    <string name="filter_edit">Настройки фильтров</string>
+    <string name="goTo">Перейти</string>
 </resources>

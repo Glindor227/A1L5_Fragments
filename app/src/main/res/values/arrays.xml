@@ -6,6 +6,8 @@
         <item>Екатеринбург</item>
         <item>Новосибирск</item>
         <item>Самара</item>
+        <item>Уфа</item>
+        <item>Сочи</item>
     </string-array>
 
 
@@ -15,6 +17,8 @@
         <item>23</item>
         <item>19</item>
         <item>25</item>
+        <item>22</item>
+        <item>29</item>
     </string-array>
     <string-array name="cities_hum">
         <item>75%</item>
@@ -22,12 +26,16 @@
         <item>50%</item>
         <item>40%</item>
         <item>80%</item>
+        <item>50%</item>
+        <item>90%</item>
     </string-array>
     <string-array name="cities_pressure">
         <item>760мм</item>
         <item>750мм</item>
         <item>755мм</item>
         <item>766мм</item>
+        <item>780мм</item>
+        <item>780мм</item>
         <item>780мм</item>
     </string-array>
     <string-array name="cities_wind">
@@ -36,6 +44,8 @@
         <item>2 &#8211; 4 м/с</item>
         <item>0 &#8211; 1 м/с</item>
         <item>4 &#8211; 6 м/с</item>
+        <item>2 &#8211; 6 м/с</item>
+        <item>5 &#8211; 6 м/с</item>
     </string-array>
 
 </resources>
