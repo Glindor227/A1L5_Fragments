@@ -94,7 +94,12 @@ public class CitiesFragment extends Fragment {
         RecyclerView listView = view.findViewById(R.id.cities_list_view);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(Objects.requireNonNull(getActivity()).getApplicationContext(),
-                LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager.VERTICAL, false){
+                    @Override
+                    public boolean canScrollVertically() {
+                        return true;//так Toolbar сворачиваться начинает сразу - удобнее
+                    }
+                };
 
         final List<String> tempData =
                 new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.cities)));
