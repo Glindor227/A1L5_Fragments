@@ -26,4 +26,8 @@
     <string name="addDay">Показать еще день</string>
     <string name="filter_edit">Настройки фильтров</string>
     <string name="goTo">Перейти</string>
+    <string name="menu_setting">Настройки отображения</string>
+    <string name="menu_server_change">Сменить сервер</string>
+    <string name="menu_city_const">Запонить выбор города</string>
+    <string name="menu_exit">Выход</string>
 </resources>
