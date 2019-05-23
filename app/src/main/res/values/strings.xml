@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Погода</string>
     <string name="cityLabel">Город:  </string>
-    <string name="cityName">Москва</string>
 
-    <string name="tempLabel">Температура:                           </string>
+    <string name="tempLabel">Температура:</string>
     <string name="overcastLabel">Облачность:  </string>
     <string name="humLabel">Влажность:  </string>
     <string name="pressureLabel">Давление:  </string>
@@ -18,12 +17,10 @@
     <string name="humValue">75%</string>
     <string name="pressureValue">760мм</string>
     <string name="windValue">5 &#8211; 7 м/с</string>
-
     <string name="cityLabel2">Город</string>
     <string name="cityHelp">Введите имя города</string>
     <string name="to_second_activity">К погоде</string>
     <string name="empty">Empty</string>
-
     <string name="action_settings">Settings</string>
     <string name="Exec">Применить</string>
     <string name="addDay">Показать еще день</string>

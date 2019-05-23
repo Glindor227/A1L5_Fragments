@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.geekbrains.a1l5_fragments.common.FragmentType;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,27 +25,31 @@ public class MainActivity extends AppCompatActivity {
         if(toolbar!=null) {
             setSupportActionBar(toolbar);
 
-            FloatingActionButton fab = findViewById(R.id.fab);
-            // Обработка нажатия на плавающую кнопку
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                // Здесь вылетит Snackbar
-                    Snackbar.make(view, getResources().getString(R.string.filter_edit),
-                            Snackbar.LENGTH_LONG)
-                        .setAction(getResources().getString(R.string.goTo), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent();
-                                intent.setClass(MainActivity.this,
-                                        CoatOfArmsActivity.class);
-                                intent.putExtra("type", 2);
-                                startActivity(intent);
-                            }
-                        }).show();
-                }
-            });
+            initFloatingActionButton();
         }
+    }
+
+    private void initFloatingActionButton() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        // Обработка нажатия на плавающую кнопку
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            // Здесь вылетит Snackbar
+                Snackbar.make(view, getResources().getString(R.string.filter_edit),
+                        Snackbar.LENGTH_LONG)
+                    .setAction(getResources().getString(R.string.goTo), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this,
+                                    CoatOfArmsActivity.class);
+                            intent.putExtra("type", FragmentType.Setting);
+                            startActivity(intent);
+                        }
+                    }).show();
+            }
+        });
     }
 
     @Override

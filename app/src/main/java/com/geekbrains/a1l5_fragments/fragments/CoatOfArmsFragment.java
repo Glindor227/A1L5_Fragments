@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
-import com.geekbrains.a1l5_fragments.WeatherParam;
+import com.geekbrains.a1l5_fragments.common.WeatherParam;
 
 import java.util.Objects;
 
@@ -37,8 +37,8 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     public WeatherParam getWeatherParams() {
-        Object oWP = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
-        return (oWP instanceof WeatherParam)? (WeatherParam) oWP :null;
+        Object weatherParams = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
+        return (weatherParams instanceof WeatherParam)? (WeatherParam) weatherParams :null;
     }
 
     @Override

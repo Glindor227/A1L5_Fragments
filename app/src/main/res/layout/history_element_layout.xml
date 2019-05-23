@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <TextView
                 android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
@@ -26,8 +25,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/textViewCity"
@@ -36,8 +34,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_toEndOf="@+id/textViewTime"
-                android:text="TextView" />
+                android:layout_toEndOf="@+id/textViewTime"/>
 
             <TextView
                 android:id="@+id/textViewTemp"
@@ -46,11 +43,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/textViewCity"
-                android:text="TextView" />
-
-
-
+                android:layout_toEndOf="@+id/textViewCity"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

@@ -17,7 +17,8 @@ import android.view.ViewGroup;
 import com.geekbrains.a1l5_fragments.CitiesRVAdapter;
 import com.geekbrains.a1l5_fragments.CoatOfArmsActivity;
 import com.geekbrains.a1l5_fragments.R;
-import com.geekbrains.a1l5_fragments.WeatherParam;
+import com.geekbrains.a1l5_fragments.common.WeatherParam;
+import com.geekbrains.a1l5_fragments.common.FragmentType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +141,7 @@ public class CitiesFragment extends Fragment {
             Intent intent = new Intent();
             intent.setClass(Objects.requireNonNull(getActivity()), CoatOfArmsActivity.class);
             // и передадим туда параметры
-            intent.putExtra("type", 1);//это погодв, а не настройка
+            intent.putExtra("type", FragmentType.Weather);//это погодв, а не настройка
             intent.putExtra("WeatherParams", paramIs);
             intent.putExtra("index", currentPosition);
             startActivity(intent);
