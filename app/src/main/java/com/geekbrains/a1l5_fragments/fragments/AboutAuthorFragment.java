@@ -21,5 +21,4 @@ public class AboutAuthorFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about_author, container, false);
     }
-
 }

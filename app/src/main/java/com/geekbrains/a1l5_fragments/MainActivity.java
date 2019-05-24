@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.cities) newFragment = new CitiesFragment();
         else if (id == R.id.feedback) newFragment = new FeedbackFragment();
 
-
         if(newFragment != null){
             getSupportFragmentManager()
                 .beginTransaction()
