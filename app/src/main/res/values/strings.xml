@@ -30,4 +30,21 @@
     <string name="menu_server_change">Сменить сервер</string>
     <string name="menu_city_const">Запонить выбор города</string>
     <string name="menu_exit">Выход</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">О разработчике</string>
+    <string name="menu_gallery">К списку городов</string>
+    <string name="menu_send">Форма обратной связи</string>
+    <string name="about">Тестовое приложение</string>
+
+    <string name="hello_blank_fragment">Не стреляйте в пианиста, играет как умеет!</string>
+    <string name="send">Послать</string>
+    <string name="feedback">Благодарность!</string>
+
+
 </resources>

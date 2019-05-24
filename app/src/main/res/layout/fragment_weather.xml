@@ -148,7 +148,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llHum">
+        app:layout_constraintTop_toBottomOf="@+id/llHum"
+        tools:ignore="UseCompoundDrawables">
 
         <TextView
             android:layout_width="0dp"
@@ -160,7 +161,8 @@
         <ImageView
             android:id="@+id/overcastValue"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 

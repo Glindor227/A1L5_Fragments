@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- это макет для альбомной ориентации -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource"
+    android:baselineAligned="false">
 
     <!-- Фрагмент с выбором городов -->
     <fragment android:name="com.geekbrains.a1l5_fragments.fragments.CitiesFragment"
