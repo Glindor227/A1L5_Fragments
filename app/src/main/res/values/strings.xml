@@ -45,6 +45,9 @@
     <string name="hello_blank_fragment">Не стреляйте в пианиста, играет как умеет!</string>
     <string name="send">Послать</string>
     <string name="feedback">Благодарность!</string>
+    <string name="SensorLabel">Сенсоры</string>
+    <string name="temp_not_support">Temp not support</string>
+    <string name="hum_not_support">Hum not support</string>
 
 
 </resources>

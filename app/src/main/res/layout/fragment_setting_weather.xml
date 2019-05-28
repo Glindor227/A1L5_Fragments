@@ -73,4 +73,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cbPressEnable" />
 
+    <com.geekbrains.a1l5_fragments.tools.CompoundSensorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </com.geekbrains.a1l5_fragments.tools.CompoundSensorView>
+
 </android.support.constraint.ConstraintLayout>
