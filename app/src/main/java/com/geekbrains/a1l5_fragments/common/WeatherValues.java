@@ -14,8 +14,4 @@ public class WeatherValues  implements Serializable {
         this.hum = hum;
         this.press = press;
     }
-
-    public String info(){
-        return "WeatherValue Temp("+temp+") Wind("+wind+") Hum("+hum+") Press("+press+")";
-    }
 }
