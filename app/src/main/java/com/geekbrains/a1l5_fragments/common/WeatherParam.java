@@ -19,5 +19,3 @@ public class WeatherParam implements Serializable {
         return "WeatherParam isWind("+isWind+") isHum("+isHum+") isOver("+isOver+") isPress("+isPress+")";
     }
 }
-
-

@@ -62,8 +62,7 @@
             android:id="@+id/tempValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tempValue" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -87,8 +86,7 @@
             android:id="@+id/humValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/humValue" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -114,8 +112,7 @@
             android:id="@+id/vindValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/windValue" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -141,8 +138,7 @@
             android:id="@+id/pressureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/pressureValue" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
