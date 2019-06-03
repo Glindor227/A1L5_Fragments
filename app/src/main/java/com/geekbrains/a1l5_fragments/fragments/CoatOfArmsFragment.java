@@ -1,28 +1,37 @@
 package com.geekbrains.a1l5_fragments.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.geekbrains.a1l5_fragments.common.WeatherValues;
 import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
+import com.geekbrains.a1l5_fragments.tools.InternetWeatherBackgroundService;
 
 import java.util.Objects;
 
 public class CoatOfArmsFragment extends Fragment {
+    public final static String BROADCAST_ACTION = "android_2.glindor";
+    private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
+    WeatherParam weatherParams;
+    String nameCity;
+
     public static CoatOfArmsFragment create(int index, WeatherParam params) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
-
         // Передача параметра
         Bundle args = new Bundle();
         args.putInt("index", index);
@@ -37,54 +46,67 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     public WeatherParam getWeatherParams() {
-        Object weatherParams = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
-        return (weatherParams instanceof WeatherParam)? (WeatherParam) weatherParams :null;
+        Object weatherParamsSeriaz = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
+        return (weatherParamsSeriaz instanceof WeatherParam)?
+                (WeatherParam) weatherParamsSeriaz :
+                new WeatherParam(true, true, true, true);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] nameArray = getResources().getStringArray(R.array.cities);
-        String[] tempArray = getResources().getStringArray(R.array.cities_temp);
-        String[] humArray = getResources().getStringArray(R.array.cities_hum);
-        String[] pressureArray = getResources().getStringArray(R.array.cities_pressure);
-        String[] windArray = getResources().getStringArray(R.array.cities_wind);
         final int index = getIndex();
-        WeatherParam param = getWeatherParams();
-        if(param==null) {
-            param = new WeatherParam(true, true, true, true);
-            Log.d("Glin2","onViewCreated - new WeatherParam");
-        }
+        weatherParams = getWeatherParams();
 
-        if(tempArray.length<index){
+        initCityName(index);
+        initService(index);
+        initHistoryListener(view);
+    }
+
+    private void initCityName(int index) {
+        String[] nameArray = getResources().getStringArray(R.array.cities);
+        nameCity = nameArray[index];
+    }
+
+    private void viewWeather(WeatherValues weatherValues) {
+        View viewFragment = getView();
+        if (viewFragment==null) {
+            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(),
+                    "Fragment view not find",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-        ((TextView)view.findViewById(R.id.cityName)).setText(nameArray[index]);
-        ((TextView)view.findViewById(R.id.tempValue)).setText(tempArray[index]);
+        ((TextView)viewFragment.findViewById(R.id.cityName)).setText(nameCity);
+        ((TextView)viewFragment.findViewById(R.id.tempValue)).setText(weatherValues.temp);
 
-        final String cityName = nameArray[index];
+        viewFragment.findViewById(R.id.llHum).
+                setVisibility(weatherParams.isHum ? View.VISIBLE:View.INVISIBLE);
+        ((TextView)viewFragment.findViewById(R.id.humValue)).setText(weatherValues.hum);
+
+        viewFragment.findViewById(R.id.llPressure).
+                setVisibility(weatherParams.isPress ? View.VISIBLE:View.INVISIBLE);
+        ((TextView)viewFragment.findViewById(R.id.pressureValue)).setText(weatherValues.press);
+
+        viewFragment.findViewById(R.id.llWind).
+                setVisibility(weatherParams.isWind ? View.VISIBLE:View.INVISIBLE);
+        ((TextView)viewFragment.findViewById(R.id.vindValue)).setText(weatherValues.wind);
+
+        viewFragment.findViewById(R.id.llOvercast).
+                setVisibility(weatherParams.isOver ? View.VISIBLE:View.INVISIBLE);
+        ((ImageView)viewFragment.findViewById(R.id.overcastValue)).setImageResource(R.drawable.overcast1);
+    }
+
+    private void initHistoryListener(@NonNull View view) {
         LinearLayout llTemp = view.findViewById(R.id.llTemp);
         llTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), HistoryWeatherActivity.class);
-                intent.putExtra("City",cityName);
+                intent.putExtra("City",nameCity);
                 Objects.requireNonNull(getActivity()).startActivity(intent);
             }
         });
-
-        view.findViewById(R.id.llHum).setVisibility(param.isHum ? View.VISIBLE:View.INVISIBLE);
-        ((TextView)view.findViewById(R.id.humValue)).setText(humArray[index]);
-
-        view.findViewById(R.id.llPressure).setVisibility(param.isPress ? View.VISIBLE:View.INVISIBLE);
-        ((TextView)view.findViewById(R.id.pressureValue)).setText(pressureArray[index]);
-
-        view.findViewById(R.id.llWind).setVisibility(param.isWind ? View.VISIBLE:View.INVISIBLE);
-        ((TextView)view.findViewById(R.id.vindValue)).setText(windArray[index]);
-
-        view.findViewById(R.id.llOvercast).setVisibility(param.isOver ? View.VISIBLE:View.INVISIBLE);
-        ((ImageView)view.findViewById(R.id.overcastValue)).setImageResource(R.drawable.overcast1);
     }
 
     @Override
@@ -93,4 +115,38 @@ public class CoatOfArmsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
+    private void initService(Integer index) {
+        Objects.requireNonNull(getActivity()).
+                registerReceiver(receiver, new IntentFilter(BROADCAST_ACTION));
+        Intent intent = new Intent(getActivity().getApplicationContext(),
+                InternetWeatherBackgroundService.class);
+        intent.putExtra("index",index);
+        getActivity().startService(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
+        super.onDestroyView();
+    }
+
+    private class ServiceFinishedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, final Intent intent) {
+            Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Object weatherSerizObj = intent.getSerializableExtra("WeatherValues");
+                    if((weatherSerizObj instanceof WeatherValues)) {
+                        WeatherValues weatherValues = (WeatherValues) weatherSerizObj;
+                        viewWeather(weatherValues);
+                    }
+                    else
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Not support service broadcast message",
+                                Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 }

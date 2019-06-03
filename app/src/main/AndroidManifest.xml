@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".tools.InternetWeatherBackgroundService"/>
         <activity android:name=".history.HistoryWeatherActivity">
         </activity>
         <activity android:name=".MainActivity"
