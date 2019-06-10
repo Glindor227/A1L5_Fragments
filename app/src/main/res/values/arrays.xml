@@ -10,6 +10,16 @@
         <item>Сочи</item>
     </string-array>
 
+    <string-array name="cities_eng">
+        <item>Moscow</item>
+        <item>Saint Petersburg</item>
+        <item>Yekaterinburg</item>
+        <item>Novosibirsk</item>
+        <item>Samara</item>
+        <item>Ufa</item>
+        <item>Sochi</item>
+    </string-array>
+
     <string-array name="cities_temp">
         <item>21</item>
         <item>17</item>
@@ -19,6 +29,7 @@
         <item>22</item>
         <item>29</item>
     </string-array>
+
     <string-array name="cities_hum">
         <item>75%</item>
         <item>95%</item>

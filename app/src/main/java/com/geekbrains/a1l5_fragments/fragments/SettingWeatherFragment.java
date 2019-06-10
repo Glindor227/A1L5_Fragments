@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import com.geekbrains.a1l5_fragments.MainActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
+import com.geekbrains.a1l5_fragments.tools.WeatherPreferences;
 
 import java.util.Objects;
 
@@ -23,14 +24,14 @@ public class SettingWeatherFragment extends Fragment {
     private  CheckBox checkBoxOver;
     private  CheckBox checkBoxPress;
     private  CheckBox checkBoxWind;
-    static boolean isCheckHum=true,isCheckOver=true,isIsCheckPress=true,isIsCheckWind=true;
+    WeatherPreferences weatherPreferences;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        weatherPreferences = new WeatherPreferences(Objects.requireNonNull(getActivity()).
+                getApplicationContext());
         initCheckBox(view);
-
         initApplButton(view);
     }
 
@@ -38,10 +39,15 @@ public class SettingWeatherFragment extends Fragment {
         view.findViewById(R.id.bSettingApply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCheckHum = checkBoxHum.isChecked();
-                isCheckOver = checkBoxOver.isChecked();
-                isIsCheckPress = checkBoxPress.isChecked();
-                isIsCheckWind = checkBoxWind.isChecked();
+                boolean  isCheckHum = checkBoxHum.isChecked();
+                boolean  isCheckOver = checkBoxOver.isChecked();
+                boolean  isIsCheckPress = checkBoxPress.isChecked();
+                boolean  isIsCheckWind = checkBoxWind.isChecked();
+                weatherPreferences.saveAllPreference(
+                        isCheckHum,
+                        isCheckOver,
+                        isIsCheckPress,
+                        isIsCheckWind);
                 Intent intent = new Intent();
                 intent.putExtra("WeatherParams",
                         new WeatherParam(isIsCheckWind,isCheckHum,isCheckOver,isIsCheckPress));
@@ -53,16 +59,16 @@ public class SettingWeatherFragment extends Fragment {
 
     private void initCheckBox(@NonNull View view) {
         checkBoxHum = view.findViewById(R.id.cbHumEnable);
-        checkBoxHum.setChecked(isCheckHum);
+        checkBoxHum.setChecked(weatherPreferences.getHumPreference());
 
         checkBoxOver = view.findViewById(R.id.cbOverEnable);
-        checkBoxOver.setChecked(isCheckOver);
+        checkBoxOver.setChecked(weatherPreferences.getOverPreference());
 
         checkBoxPress = view.findViewById(R.id.cbPressEnable);
-        checkBoxPress.setChecked(isIsCheckPress);
+        checkBoxPress.setChecked(weatherPreferences.getPressPreference());
 
         checkBoxWind = view.findViewById(R.id.cbWindEnable);
-        checkBoxWind.setChecked(isIsCheckWind);
+        checkBoxWind.setChecked(weatherPreferences.getWindPreference());
     }
 
     @Override
