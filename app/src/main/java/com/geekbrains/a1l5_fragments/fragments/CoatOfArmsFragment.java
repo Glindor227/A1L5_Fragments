@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.geekbrains.a1l5_fragments.Internet.OpenWeatherRepo;
 import com.geekbrains.a1l5_fragments.Internet.entites.WeatherRequestRestModel;
@@ -20,6 +20,7 @@ import com.geekbrains.a1l5_fragments.common.WeatherValues;
 import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
+import com.geekbrains.a1l5_fragments.tools.CurrentCityIndex;
 
 import java.util.Objects;
 
@@ -31,11 +32,10 @@ public class CoatOfArmsFragment extends Fragment {
     WeatherParam weatherParams;
     String nameCity;
 
-    public static CoatOfArmsFragment create(int index, WeatherParam params) {
+    public static CoatOfArmsFragment create(WeatherParam params) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
         // Передача параметра
         Bundle args = new Bundle();
-        args.putInt("index", index);
         args.putSerializable("WeatherParams", params);
         f.setArguments(args);
         return f;
@@ -43,18 +43,20 @@ public class CoatOfArmsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d("Glin!","onViewCreated() "+this.getClass());
+        int cityIndex = CurrentCityIndex.getIndex(getContext());
 
         weatherParams = getWeatherParams();
-        nameCity = initCityName(getIndex());
+        nameCity = initCityName(cityIndex);
 
         initRetrofit();
         initHistoryListener(view);
     }
     // Получить индекс из списка (фактически из параметра)
-    public int getIndex() {
-        return Objects.requireNonNull(getArguments()).getInt("index", 0);
+/*    public int getIndex() {
+        return CurrentCityIndex.getIndex(getContext());
     }
-
+*/
     public WeatherParam getWeatherParams() {
         Object weatherParamsSeriaz =
                 Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
@@ -64,6 +66,7 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void initRetrofit() {
+        Log.d("Glin!","initRetrofit("+nameCity+")");
         OpenWeatherRepo.getSingleton().getAPI().loadWeather(nameCity + ",ru",
                 "762ee61f52313fbd10a4eb54ae4d4de2", "metric")
                 .enqueue(new Callback<WeatherRequestRestModel>() {
@@ -78,6 +81,7 @@ public class CoatOfArmsFragment extends Fragment {
                                     model.main.humidity + "%",
                                     model.main.pressure + "hPa"
                             );
+                            Log.d("Glin!","initRetrofit onResponse");
                             viewWeather(weatherValues);
                         }
                     }
@@ -85,6 +89,7 @@ public class CoatOfArmsFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Call<WeatherRequestRestModel> call,
                                           @NonNull Throwable t) {
+                        Log.d("Glin!","initRetrofit onFailure");
                         viewWeather(new WeatherValues());
                     }
                 });
@@ -96,11 +101,9 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void viewWeather(WeatherValues weatherValues) {
+        Log.d("Glin!","CoatOfArmsFragment::viewWeather() ");
         View viewFragment = getView();
         if (viewFragment==null) {
-            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(),
-                    "Fragment view not find",
-                    Toast.LENGTH_SHORT).show();
             return;
         }
         ((TextView)viewFragment.findViewById(R.id.cityName)).setText(nameCity);
@@ -146,4 +149,7 @@ public class CoatOfArmsFragment extends Fragment {
         super.onDestroyView();
     }
 
+    public int getIndex() {
+        return CurrentCityIndex.getIndex(getContext());
+    }
 }

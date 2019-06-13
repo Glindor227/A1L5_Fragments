@@ -41,7 +41,9 @@ public class CitiesRVAdapter extends RecyclerView.Adapter<CitiesRVAdapter.RVView
             @Override
             public void onClick(View v) {
                 Log.d("Gl1","позиция "+iFinal);
-                citiesFragment.currentPosition = iFinal;
+                CurrentCityIndex.setIndex(citiesFragment.getContext(),iFinal);
+//                citiesFragment.currentPosition = iFinal;
+                Log.d("Glin!","showCoatOfArms 2 ");
                 citiesFragment.showCoatOfArms();
 
             }

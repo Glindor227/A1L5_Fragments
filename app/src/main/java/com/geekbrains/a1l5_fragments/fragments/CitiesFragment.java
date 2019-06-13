@@ -19,6 +19,7 @@ import com.geekbrains.a1l5_fragments.CoatOfArmsActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
 import com.geekbrains.a1l5_fragments.common.FragmentType;
+import com.geekbrains.a1l5_fragments.tools.CurrentCityIndex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +28,6 @@ import java.util.Objects;
 
 // Фрагмент выбора города из списка
 public class CitiesFragment extends Fragment {
-
-    private Bundle saveBundle = null;
 
     boolean isExistCoatOfArms;  // Можно ли расположить рядом фрагмент с погодой
     public int currentPosition = 0;    // Текущая позиция (выбранный город)
@@ -60,25 +59,32 @@ public class CitiesFragment extends Fragment {
             paramIs = (WeatherParam)oIntent;
         Log.d("Glin1","WeatherParam" + paramIs);
 
-        this.saveBundle = savedInstanceState;
-        // Определение, можно ли будет расположить рядом герб в другом фрагменте
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("Glin!","CitiesFragment onResume !!!!"+this.getClass());
         isExistCoatOfArms = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
 
         // Если это не первое создание, то восстановим текущую позицию
+/*
         if (saveBundle != null) {
-            Log.d("Glin1","CitiesFragment saveBundle =" +saveBundle);
             // Восстановление текущей позиции.
-            currentPosition = saveBundle.getInt("CurrentCity", 0);
+            if(!saveBundle.containsKey("CurrentCity")){
+                currentPosition = saveBundle.getInt("CurrentCity", 0);
+            }
+            Log.d("Glin!","CitiesFragment Get CurrentCity =" + currentPosition);
         }
+        */
+        currentPosition = CurrentCityIndex.getIndex(getContext());
+
         // Если можно нарисовать рядом герб, то сделаем это
         if (isExistCoatOfArms) {
 //            listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            Log.d("Glin!","showCoatOfArms 1 ");
+
             showCoatOfArms();
         }
     }
@@ -87,6 +93,7 @@ public class CitiesFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("CurrentCity", currentPosition);
+        Log.d("Glin!","CitiesFragment Set CurrentCity =" + currentPosition);
         super.onSaveInstanceState(outState);
     }
 
@@ -126,7 +133,8 @@ public class CitiesFragment extends Fragment {
             if (!(frag instanceof CoatOfArmsFragment)
                     || ((CoatOfArmsFragment) frag).getIndex() != currentPosition) {
                 // Создаем новый фрагмент с текущей позицией для вывода погоды
-                CoatOfArmsFragment detail = CoatOfArmsFragment.create(currentPosition,paramIs);
+                CoatOfArmsFragment detail = CoatOfArmsFragment.create(paramIs);
+                Log.d("Glin!","CoatOfArmsFragment 1 ");
 
                 // Выполняем транзакцию по замене фрагмента
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
