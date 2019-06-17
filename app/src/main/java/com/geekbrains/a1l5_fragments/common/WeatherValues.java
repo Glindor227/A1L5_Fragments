@@ -15,11 +15,26 @@ public class WeatherValues  implements Serializable {
         this.press = press;
     }
 
+    public WeatherValues(float tempI, float windI, int humI, int pressI) {
+        this.temp = String.format("%.2f", tempI) + "\u2103";
+        this.wind = String.format("%.1f", windI) + "m/s";
+        this.hum = humI+"%";
+        this.press = pressI+ "hPa";
+    }
+
     public WeatherValues() {
         this.temp = "нет данных";
         this.wind = "нет данных";
         this.hum = "нет данных";
         this.press = "нет данных";
+    }
 
+    public String Info(){
+        StringBuilder stringBuilder = new StringBuilder("Погода: ");
+        stringBuilder.append(" temp: ").append(temp);
+        stringBuilder.append(" wind: ").append(wind);
+        stringBuilder.append(" hum: ").append(hum);
+        stringBuilder.append(" press: ").append(press);
+        return stringBuilder.toString();
     }
 }

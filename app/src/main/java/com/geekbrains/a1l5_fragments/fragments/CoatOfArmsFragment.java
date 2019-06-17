@@ -2,6 +2,7 @@ package com.geekbrains.a1l5_fragments.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,10 @@ import android.widget.TextView;
 
 import com.geekbrains.a1l5_fragments.Internet.OpenWeatherRepo;
 import com.geekbrains.a1l5_fragments.Internet.entites.WeatherRequestRestModel;
+import com.geekbrains.a1l5_fragments.MainActivity;
 import com.geekbrains.a1l5_fragments.common.WeatherValues;
+import com.geekbrains.a1l5_fragments.database.DatabaseHelper;
+import com.geekbrains.a1l5_fragments.database.LastWeaterValueTable;
 import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
@@ -31,6 +35,7 @@ import retrofit2.Response;
 public class CoatOfArmsFragment extends Fragment {
     WeatherParam weatherParams;
     String nameCity;
+//    static SQLiteDatabase database;
 
     public static CoatOfArmsFragment create(WeatherParam params) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
@@ -40,6 +45,14 @@ public class CoatOfArmsFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
+/*
+    private void initDB() {
+        Log.d("Glin!3","initDB");
+        if(database==null) {
+            database = new DatabaseHelper(getContext()).getWritableDatabase();
+        }
+    }
+*/
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -49,9 +62,19 @@ public class CoatOfArmsFragment extends Fragment {
         weatherParams = getWeatherParams();
         nameCity = initCityName(cityIndex);
 
+//        initDB();
+        initViewFromDB();
+
         initRetrofit();
         initHistoryListener(view);
     }
+
+    private void initViewFromDB() {
+        WeatherValues weatherValues = LastWeaterValueTable.getLastValue(nameCity, MainActivity.database);
+        Log.d("Glin!4","initViewFromDB() "+weatherValues.Info());
+        viewWeather(weatherValues);
+    }
+
     // Получить индекс из списка (фактически из параметра)
 /*    public int getIndex() {
         return CurrentCityIndex.getIndex(getContext());
@@ -82,6 +105,16 @@ public class CoatOfArmsFragment extends Fragment {
                                     model.main.pressure + "hPa"
                             );
                             Log.d("Glin!","initRetrofit onResponse");
+                            LastWeaterValueTable.addWeatherValue(
+                                    nameCity,
+                                    model.main.temp,
+                                    model.main.humidity,
+                                    model.main.pressure,
+                                    model.wind.speed,
+                                    0,
+                                    MainActivity.database);
+
+                            Log.d("Glin!4","onResponse() "+weatherValues.Info());
                             viewWeather(weatherValues);
                         }
                     }

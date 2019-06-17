@@ -1,6 +1,8 @@
 package com.geekbrains.a1l5_fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,20 +15,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.geekbrains.a1l5_fragments.common.FragmentType;
+import com.geekbrains.a1l5_fragments.database.CitiesTable;
+import com.geekbrains.a1l5_fragments.database.DatabaseHelper;
 import com.geekbrains.a1l5_fragments.fragments.AboutAuthorFragment;
 import com.geekbrains.a1l5_fragments.fragments.CitiesFragment;
 import com.geekbrains.a1l5_fragments.fragments.FeedbackFragment;
+import com.geekbrains.a1l5_fragments.tools.GeoLocation;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     // криво конечно, но по null тульару будем ориентироваться какая layoгt используется
     private Toolbar toolbar=null;
+    public int PERMISSION_REQUEST_CODE = 227;
+    GeoLocation geoLocation;
+    public static SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             initCitiesFragment();
         }
         initDrawerMenu(toolbar);//боковое меню будет для всех
+        initDB();
     }
+
+    private void initDB() {
+        Log.d("Glindor227","initDB");
+        if(database==null) {
+            database = new DatabaseHelper(getApplicationContext()).getWritableDatabase();
+        }
+    }
+
 
     private void initCitiesFragment() {
         CitiesFragment citiesFragment = new CitiesFragment();
@@ -87,6 +105,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length == 2 &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1]
+                            == PackageManager.PERMISSION_GRANTED)) {
+                geoLocation.FindLocation(true);
+            }
+        }
+    }
+
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         int countOfFragmentInManager = getSupportFragmentManager().getBackStackEntryCount();
@@ -126,8 +157,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.menu_city_const: {
-                Toast.makeText(getApplicationContext(), "Заглушка: Выбор города",
-                        Toast.LENGTH_SHORT).show();
+                if(geoLocation==null)
+                    geoLocation = new GeoLocation(this);
+                geoLocation.FindLocation(false);
                 break;
             }
             case R.id.menu_exit: {//
@@ -169,4 +201,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void addCity(String nameCity,double latitude,double longitude) {
+        Log.d("Glindor227","Add ("+nameCity+")");
+        CitiesTable.addCity(nameCity,latitude,longitude,database);
+        recreate();
+    }
 }
