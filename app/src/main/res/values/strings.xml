@@ -28,7 +28,7 @@
     <string name="goTo">Перейти</string>
     <string name="menu_setting">Настройки отображения</string>
     <string name="menu_server_change">Сменить сервер</string>
-    <string name="menu_city_const">Запонить выбор города</string>
+    <string name="menu_city_const">Добавить текущий город в список</string>
     <string name="menu_exit">Выход</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,6 +48,7 @@
     <string name="SensorLabel">Сенсоры</string>
     <string name="temp_not_support">Temp not support</string>
     <string name="hum_not_support">Hum not support</string>
+    <string name="developerPhone">+79166034927</string>
 
 
 </resources>

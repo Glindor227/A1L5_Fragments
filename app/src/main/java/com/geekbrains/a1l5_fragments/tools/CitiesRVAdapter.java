@@ -3,18 +3,14 @@ package com.geekbrains.a1l5_fragments.tools;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import java.util.List;
 
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.fragments.CitiesFragment;
-
-import java.util.List;
-
 
 public class CitiesRVAdapter extends RecyclerView.Adapter<CitiesRVAdapter.RVViewHolder> {
     private List<String> data;
@@ -40,10 +36,9 @@ public class CitiesRVAdapter extends RecyclerView.Adapter<CitiesRVAdapter.RVView
         rvViewHolder.textViewCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Gl1","позиция "+iFinal);
-                CurrentCityIndex.setIndex(citiesFragment.getContext(),iFinal);
+                TextView textView = (TextView) v;
+                CurrentCityIndex.setIndex(citiesFragment.getContext(),iFinal,textView.getText().toString());
 //                citiesFragment.currentPosition = iFinal;
-                Log.d("Glin!","showCoatOfArms 2 ");
                 citiesFragment.showCoatOfArms();
 
             }

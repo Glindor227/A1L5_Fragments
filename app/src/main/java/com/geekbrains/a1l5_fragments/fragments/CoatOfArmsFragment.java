@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,15 @@ import android.widget.TextView;
 
 import com.geekbrains.a1l5_fragments.Internet.OpenWeatherRepo;
 import com.geekbrains.a1l5_fragments.Internet.entites.WeatherRequestRestModel;
+import com.geekbrains.a1l5_fragments.MainActivity;
 import com.geekbrains.a1l5_fragments.common.WeatherValues;
+import com.geekbrains.a1l5_fragments.database.CitiesTable;
+import com.geekbrains.a1l5_fragments.database.LastWeaterValueTable;
 import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
 import com.geekbrains.a1l5_fragments.tools.CurrentCityIndex;
+import com.geekbrains.a1l5_fragments.tools.LocationPair;
 
 import java.util.Objects;
 
@@ -40,23 +43,23 @@ public class CoatOfArmsFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("Glin!","onViewCreated() "+this.getClass());
-        int cityIndex = CurrentCityIndex.getIndex(getContext());
-
         weatherParams = getWeatherParams();
-        nameCity = initCityName(cityIndex);
+        nameCity = CurrentCityIndex.getIndexName(getContext());
 
+        initViewFromDB();
         initRetrofit();
         initHistoryListener(view);
     }
-    // Получить индекс из списка (фактически из параметра)
-/*    public int getIndex() {
-        return CurrentCityIndex.getIndex(getContext());
+
+    private void initViewFromDB() {
+        WeatherValues weatherValues = LastWeaterValueTable.getLastValue(nameCity, MainActivity.database);
+        viewWeather(weatherValues);
     }
-*/
+
     public WeatherParam getWeatherParams() {
         Object weatherParamsSeriaz =
                 Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
@@ -66,9 +69,9 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void initRetrofit() {
-        Log.d("Glin!","initRetrofit("+nameCity+")");
-        OpenWeatherRepo.getSingleton().getAPI().loadWeather(nameCity + ",ru",
-                "762ee61f52313fbd10a4eb54ae4d4de2", "metric")
+        LocationPair locationPair = CitiesTable.getLocate(nameCity,MainActivity.database);
+        OpenWeatherRepo.getSingleton().getAPI().loadWeather(locationPair.latitude,locationPair.longitude,
+                "762ee61f52313fbd10a4eb54ae4d4de2","metric")
                 .enqueue(new Callback<WeatherRequestRestModel>() {
                     @Override
                     public void onResponse(@NonNull Call<WeatherRequestRestModel> call,
@@ -81,7 +84,15 @@ public class CoatOfArmsFragment extends Fragment {
                                     model.main.humidity + "%",
                                     model.main.pressure + "hPa"
                             );
-                            Log.d("Glin!","initRetrofit onResponse");
+                            LastWeaterValueTable.addWeatherValue(
+                                    nameCity,
+                                    model.main.temp,
+                                    model.main.humidity,
+                                    model.main.pressure,
+                                    model.wind.speed,
+                                    0,
+                                    MainActivity.database);
+
                             viewWeather(weatherValues);
                         }
                     }
@@ -89,19 +100,12 @@ public class CoatOfArmsFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Call<WeatherRequestRestModel> call,
                                           @NonNull Throwable t) {
-                        Log.d("Glin!","initRetrofit onFailure");
                         viewWeather(new WeatherValues());
                     }
                 });
     }
 
-    private String initCityName(int index) {
-        String[] nameArray = getResources().getStringArray(R.array.cities);
-        return nameArray[index];
-    }
-
     private void viewWeather(WeatherValues weatherValues) {
-        Log.d("Glin!","CoatOfArmsFragment::viewWeather() ");
         View viewFragment = getView();
         if (viewFragment==null) {
             return;
