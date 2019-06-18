@@ -1,5 +1,7 @@
 package com.geekbrains.a1l5_fragments.common;
 
+import android.annotation.SuppressLint;
+
 import java.io.Serializable;
 
 public class WeatherValues  implements Serializable {
@@ -15,6 +17,7 @@ public class WeatherValues  implements Serializable {
         this.press = press;
     }
 
+    @SuppressLint("DefaultLocale")
     public WeatherValues(float tempI, float windI, int humI, int pressI) {
         this.temp = String.format("%.2f", tempI) + "\u2103";
         this.wind = String.format("%.1f", windI) + "m/s";
@@ -30,11 +33,9 @@ public class WeatherValues  implements Serializable {
     }
 
     public String Info(){
-        StringBuilder stringBuilder = new StringBuilder("Погода: ");
-        stringBuilder.append(" temp: ").append(temp);
-        stringBuilder.append(" wind: ").append(wind);
-        stringBuilder.append(" hum: ").append(hum);
-        stringBuilder.append(" press: ").append(press);
-        return stringBuilder.toString();
+        return "Погода: " + " temp: " + temp +
+                " wind: " + wind +
+                " hum: " + hum +
+                " press: " + press;
     }
 }

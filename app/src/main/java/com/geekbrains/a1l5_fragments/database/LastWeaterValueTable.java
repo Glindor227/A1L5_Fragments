@@ -3,10 +3,8 @@ package com.geekbrains.a1l5_fragments.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.geekbrains.a1l5_fragments.common.WeatherValues;
-
+import java.util.Objects;
 
 public class LastWeaterValueTable {
     private final static String TABLE_NAME = "lastWeaterValue";
@@ -18,8 +16,7 @@ public class LastWeaterValueTable {
     private final static String COLUMN_WIND = "wind";
     private final static String COLUMN_OVER = "over";
 
-
-    public static void createTable(SQLiteDatabase database) {
+    static void createTable(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE lastWeaterValue (" +
                 COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "    cityName TEXT    NOT NULL," +
@@ -30,10 +27,6 @@ public class LastWeaterValueTable {
                 "    over     INTEGER NOT NULL" +
                 ");");
     }
-
-    public static void onUpgrade(SQLiteDatabase database) {
-    }
-
 
     private static boolean existValue(String cityName, SQLiteDatabase database){
         Cursor cursor = getCursor(cityName, database);
@@ -61,21 +54,17 @@ public class LastWeaterValueTable {
         if(!existValue(cityName,database)) {
             database.insert(TABLE_NAME, null, values);
         }else{
-//            database.update(TABLE_NAME, values, COLUMN_CITY_NAME + "=" + cityName, null);
-//            database.update(TABLE_NAME, values, "%s = '%s'", new String[] {COLUMN_CITY_NAME, cityName});
             database.execSQL("UPDATE " + TABLE_NAME + " SET " +
                     COLUMN_TEMP + " = " + temp + ","+
                     COLUMN_HUM + " = " + hum + ","+
                     COLUMN_PRESS + " = " + press + ","+
                     COLUMN_WIND + " = " + wind + ","+
                     COLUMN_OVER + " = " + over +
-
                     " WHERE "+ COLUMN_CITY_NAME + " = '" + cityName + "';");
         }
     }
 
     public static WeatherValues getLastValue(String cityName,SQLiteDatabase database) {
-//        Cursor cursor = database.query(TABLE_NAME, null, null, null,               null, null, null);
         Cursor cursor = getCursor(cityName, database);
         return getResultFromCursor(cursor);
     }
@@ -88,14 +77,10 @@ public class LastWeaterValueTable {
                     cursor.getFloat(cursor.getColumnIndex(COLUMN_WIND)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_HUM)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_PRESS)));
-            Log.d("Glin!4","getResultFromCursor() "+weatherValues.Info());
         }
         else
             weatherValues = new WeatherValues();
-
-        try { cursor.close(); } catch (Exception ignored) {}
-        Log.d("Glin!2","getResultFromCursor() "+weatherValues);
-
+        try { Objects.requireNonNull(cursor).close(); } catch (Exception ignored) {}
         return weatherValues;
     }
 }

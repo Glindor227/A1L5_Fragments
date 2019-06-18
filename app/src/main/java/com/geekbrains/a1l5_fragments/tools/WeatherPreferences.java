@@ -37,7 +37,6 @@ public class WeatherPreferences {
         return getPreference(windKey);
     }
 
-
     private void savePreference(String key,boolean value){
         final SharedPreferences defaultPrefs =
                 PreferenceManager.getDefaultSharedPreferences(context);

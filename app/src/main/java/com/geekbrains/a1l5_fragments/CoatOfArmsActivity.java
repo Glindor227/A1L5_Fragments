@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.geekbrains.a1l5_fragments.common.FragmentType;
 import com.geekbrains.a1l5_fragments.fragments.CoatOfArmsFragment;
@@ -44,7 +43,6 @@ public class CoatOfArmsActivity extends AppCompatActivity {
             fragmentClass.setArguments(getIntent().getExtras());
         }
         // Добавим фрагмент на activity
-        Log.d("Glin!","CoatOfArmsFragment 2 ");
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragmentClass).commit();

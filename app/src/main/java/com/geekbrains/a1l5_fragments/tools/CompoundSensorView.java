@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 import java.util.Objects;
+
 import com.geekbrains.a1l5_fragments.R;
 
 public class CompoundSensorView extends ConstraintLayout {

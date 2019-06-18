@@ -1,6 +1,4 @@
 package com.geekbrains.a1l5_fragments.fragments;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

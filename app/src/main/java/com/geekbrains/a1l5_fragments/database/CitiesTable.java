@@ -3,9 +3,12 @@ package com.geekbrains.a1l5_fragments.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.geekbrains.a1l5_fragments.common.WeatherValues;
+import com.geekbrains.a1l5_fragments.tools.LocationPair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class CitiesTable {
     private final static String TABLE_NAME = "Cities";
@@ -14,9 +17,7 @@ public class CitiesTable {
     private final static String COLUMN_LAT = "latitude";
     private final static String COLUMN_LONG = "longitude";
 
-
-    public static void createTable(SQLiteDatabase database) {
-        Log.d("Glindor227","CitiesTable.createTable");
+    static void createTable(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE "+TABLE_NAME+" (" +
                 "    "+COLUMN_ID+"       INTEGER PRIMARY KEY," +
                 "    "+COLUMN_CITY_NAME+"  TEXT    NOT NULL," +
@@ -32,18 +33,13 @@ public class CitiesTable {
         addCity("Минск",53.904541,27.561523,database);
     }
 
-    public static void onUpgrade(SQLiteDatabase database) {
-        Log.d("Glindor227","CitiesTable.onUpgrade");
-    }
-
     public static void addCity(String name, double latitude, double longitude, SQLiteDatabase database){
         if(existValue(name,database))
             return;
-        Log.d("Glindor227","CitiesTable.addCity "+name);
         ContentValues values = new ContentValues();
         values.put(COLUMN_CITY_NAME, name);
-        values.put(COLUMN_LAT, name);
-        values.put(COLUMN_LONG, name);
+        values.put(COLUMN_LAT, latitude);
+        values.put(COLUMN_LONG, longitude);
         database.insert(TABLE_NAME, null, values);
     }
 
@@ -58,13 +54,30 @@ public class CitiesTable {
     }
 
     private static Cursor getCursor(String cityName, SQLiteDatabase database) {
-        if(database!=null)
-            Log.d("Glindor227","CitiesTable.getCursor "+cityName);
-        else
-            Log.d("Glindor227","CitiesTable.getCursor database==null");
-
-        return database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
+        return Objects.requireNonNull(database).rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "
                 + COLUMN_CITY_NAME + " = '" + cityName + "';", null);
     }
 
+    public static List<String> getList(SQLiteDatabase database) {
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME +";", null);
+        List<String> cities = new ArrayList<>();
+        if(cursor != null)  {
+            while (cursor.moveToNext()){
+                cities.add(cursor.getString(cursor.getColumnIndex(COLUMN_CITY_NAME)));
+            }
+        }
+        Objects.requireNonNull(cursor).close();
+        return cities;
+    }
+
+    public static LocationPair getLocate(String cityName, SQLiteDatabase database){
+        Cursor cursor = getCursor(cityName, database);
+        cursor.moveToFirst();
+        int i1 = cursor.getColumnIndex(COLUMN_LAT);
+        double p1 = cursor.getDouble(i1);
+        int i2 = cursor.getColumnIndex(COLUMN_LONG);
+        double p2 = cursor.getDouble(i2);
+        cursor.close();
+        return new LocationPair(p1,p2);
+    }
 }

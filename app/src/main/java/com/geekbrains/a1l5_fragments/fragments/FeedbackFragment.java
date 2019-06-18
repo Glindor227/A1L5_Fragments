@@ -56,7 +56,6 @@ public class FeedbackFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

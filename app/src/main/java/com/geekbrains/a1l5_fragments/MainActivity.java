@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,12 +54,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initDB() {
-        Log.d("Glindor227","initDB");
         if(database==null) {
             database = new DatabaseHelper(getApplicationContext()).getWritableDatabase();
         }
     }
-
 
     private void initCitiesFragment() {
         CitiesFragment citiesFragment = new CitiesFragment();
@@ -115,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -202,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void addCity(String nameCity,double latitude,double longitude) {
-        Log.d("Glindor227","Add ("+nameCity+")");
         CitiesTable.addCity(nameCity,latitude,longitude,database);
         recreate();
     }
