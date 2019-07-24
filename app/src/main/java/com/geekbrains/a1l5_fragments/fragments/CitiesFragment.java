@@ -29,7 +29,7 @@ public class CitiesFragment extends Fragment {
     private TextView emptyTextView;
     private Bundle saveBundle = null;
 
-    boolean isExistCoatOfArms;  // Можно ли расположить рядом фрагмент с гербом
+    boolean isExistCoatOfArms;  // Можно ли расположить рядом фрагмент с погодой
     int currentPosition = 0;    // Текущая позиция (выбранный город)
     WeatherParam paramIs = new WeatherParam(true,true,true,true);
 
@@ -44,8 +44,8 @@ public class CitiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(savedInstanceState!=null)
-            Log.d("Glin1","CitiesFragment onViewCreated =" + savedInstanceState.toString());
-
+            Log.d("Glin1",
+                    "CitiesFragment onViewCreated =" + savedInstanceState.toString());
         initViews(view);
         initList();
     }
@@ -55,13 +55,13 @@ public class CitiesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Object oIntent = Objects.requireNonNull(getActivity()).getIntent().getSerializableExtra("WeatherParams");
+        Object oIntent = Objects.requireNonNull(getActivity()).getIntent()
+                .getSerializableExtra("WeatherParams");
         if(oIntent instanceof WeatherParam)
             paramIs = (WeatherParam)oIntent;
         Log.d("Glin1","WeatherParam" + paramIs);
 
         this.saveBundle = savedInstanceState;
-        // Определение, можно ли будет расположить рядом герб в другом фрагменте
     }
 
     @Override
@@ -82,8 +82,6 @@ public class CitiesFragment extends Fragment {
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             showCoatOfArms();
         }
-
-
     }
 
     // Сохраним текущую позицию (вызывается перед выходом из фрагмента)
@@ -103,20 +101,16 @@ public class CitiesFragment extends Fragment {
                 showSetting();
             }
         });
-
-
     }
 
     private void initList() {
         // Для того, чтобы показать список, надо задействовать адаптер.
         // Такая конструкция работает для списков, например ListActivity.
         // Здесь создаем из ресурсов список городов (из массива)
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()), R.array.cities,
-                android.R.layout.simple_list_item_activated_1);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()),
+                R.array.cities, android.R.layout.simple_list_item_activated_1);
         listView.setAdapter(adapter);
-
         listView.setEmptyView(emptyTextView);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,8 +126,8 @@ public class CitiesFragment extends Fragment {
 //            listView.setItemChecked(currentPosition, true);
 
             // Проверим, что фрагмент с настройками существует в activity
-            Fragment frag = Objects.requireNonNull(getFragmentManager()).findFragmentById(R.id.coat_of_arms);
-
+            Fragment frag = Objects.requireNonNull(getFragmentManager())
+                    .findFragmentById(R.id.coat_of_arms);
 
             // Если есть необходимость, то выведем герб
             if ((frag instanceof SettingWeatherFragment)) {
@@ -148,8 +142,6 @@ public class CitiesFragment extends Fragment {
             //ft.addToBackStack(null);
             ft.addToBackStack("Some_Key");
             ft.commit();
-
-            // а если не null
         } else {
             // Если нельзя вывести герб рядом, откроем вторую activity
             Intent intent = new Intent();
@@ -158,7 +150,6 @@ public class CitiesFragment extends Fragment {
             startActivity(intent);
         }
     }
-
 
     // Показать герб. Ecли возможно, то показать рядом со списком,
     // если нет, то открыть вторую activity
@@ -169,13 +160,13 @@ public class CitiesFragment extends Fragment {
             listView.setItemChecked(currentPosition, true);
 
             // Проверим, что фрагмент с гербом существует в activity
-
             Fragment frag = Objects.requireNonNull(getFragmentManager()).findFragmentById(R.id.coat_of_arms);
 
             // Если нет фрагмента
             // или не того типа
             // или того типа, но не с тем индексом
-            if (!(frag instanceof CoatOfArmsFragment) || ((CoatOfArmsFragment) frag).getIndex() != currentPosition) {
+            if (!(frag instanceof CoatOfArmsFragment)
+                    || ((CoatOfArmsFragment) frag).getIndex() != currentPosition) {
                 // Создаем новый фрагмент с текущей позицией для вывода герба
                 CoatOfArmsFragment detail = CoatOfArmsFragment.create(currentPosition,paramIs);
 

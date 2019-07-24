@@ -1,5 +1,6 @@
 package com.geekbrains.a1l5_fragments.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.geekbrains.a1l5_fragments.history.HistoryWeatherActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.WeatherParam;
 
@@ -35,7 +38,6 @@ public class CoatOfArmsFragment extends Fragment {
 
     public WeatherParam getWeatherParams() {
         Object oWP = Objects.requireNonNull(getArguments()).getSerializable("WeatherParams");
-
         return (oWP instanceof WeatherParam)? (WeatherParam) oWP :null;
     }
 
@@ -48,12 +50,11 @@ public class CoatOfArmsFragment extends Fragment {
         String[] humArray = getResources().getStringArray(R.array.cities_hum);
         String[] pressureArray = getResources().getStringArray(R.array.cities_pressure);
         String[] windArray = getResources().getStringArray(R.array.cities_wind);
-        int index = getIndex();
+        final int index = getIndex();
         WeatherParam param = getWeatherParams();
         if(param==null) {
             param = new WeatherParam(true, true, true, true);
             Log.d("Glin2","onViewCreated - new WeatherParam");
-
         }
 
         if(tempArray.length<index){
@@ -62,6 +63,16 @@ public class CoatOfArmsFragment extends Fragment {
         ((TextView)view.findViewById(R.id.cityName)).setText(nameArray[index]);
         ((TextView)view.findViewById(R.id.tempValue)).setText(tempArray[index]);
 
+        final String cityName = nameArray[index];
+        LinearLayout llTemp = view.findViewById(R.id.llTemp);
+        llTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HistoryWeatherActivity.class);
+                intent.putExtra("City",cityName);
+                Objects.requireNonNull(getActivity()).startActivity(intent);
+            }
+        });
 
         view.findViewById(R.id.llHum).setVisibility(param.isHum ? View.VISIBLE:View.INVISIBLE);
         ((TextView)view.findViewById(R.id.humValue)).setText(humArray[index]);
@@ -74,14 +85,11 @@ public class CoatOfArmsFragment extends Fragment {
 
         view.findViewById(R.id.llOvercast).setVisibility(param.isOver ? View.VISIBLE:View.INVISIBLE);
         ((ImageView)view.findViewById(R.id.overcastValue)).setImageResource(R.drawable.overcast1);
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
