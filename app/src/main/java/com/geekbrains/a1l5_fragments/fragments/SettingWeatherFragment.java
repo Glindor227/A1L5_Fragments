@@ -6,16 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.geekbrains.a1l5_fragments.MainActivity;
 import com.geekbrains.a1l5_fragments.R;
-import com.geekbrains.a1l5_fragments.WeatherParam;
+import com.geekbrains.a1l5_fragments.common.WeatherParam;
 
 import java.util.Objects;
 
@@ -33,6 +31,10 @@ public class SettingWeatherFragment extends Fragment {
 
         initCheckBox(view);
 
+        initApplButton(view);
+    }
+
+    private void initApplButton(@NonNull View view) {
         view.findViewById(R.id.bSettingApply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,8 +2,10 @@ package com.geekbrains.a1l5_fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.geekbrains.a1l5_fragments.common.FragmentType;
 import com.geekbrains.a1l5_fragments.fragments.CoatOfArmsFragment;
 import com.geekbrains.a1l5_fragments.fragments.SettingWeatherFragment;
 
@@ -19,28 +21,30 @@ public class CoatOfArmsActivity extends AppCompatActivity {
             finish();
             return;
         }
+        initFragment();
+    }
 
-        if (savedInstanceState == null) {
-
-            //перенаправляем параметр во фрагмент,
-            // но сперва смотрим. какой фрагмент открывать
-            int type = getIntent().getIntExtra("type",0);
-            if(type==1) {
-                CoatOfArmsFragment details = new CoatOfArmsFragment();
-                details.setArguments(getIntent().getExtras());
-                // Добавим фрагмент на activity
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, details).commit();
-            }
-            if(type==2){
-                SettingWeatherFragment details = new SettingWeatherFragment();
-//                details.setArguments(getIntent().getExtras());
-                // Добавим фрагмент на activity
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, details).commit();
+    private void initFragment() {
+        //перенаправляем параметр во фрагмент,
+        // но сперва смотрим. какой фрагмент открывать
+        FragmentType fragmentType = (FragmentType) getIntent().getSerializableExtra("type");
+        if(fragmentType==FragmentType.Weather) {
+            initSingleFragment(new CoatOfArmsFragment());
+        }
+        else {
+            if(fragmentType==FragmentType.Setting){
+                initSingleFragment(new SettingWeatherFragment());
             }
         }
+    }
+
+    private void initSingleFragment(Fragment fragmentClass) {
+        if(fragmentClass instanceof CoatOfArmsFragment){
+            fragmentClass.setArguments(getIntent().getExtras());
+        }
+        // Добавим фрагмент на activity
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragmentClass).commit();
     }
 }

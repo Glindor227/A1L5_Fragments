@@ -1,4 +1,4 @@
-package com.geekbrains.a1l5_fragments;
+package com.geekbrains.a1l5_fragments.common;
 
 import java.io.Serializable;
 
@@ -18,5 +18,6 @@ public class WeatherParam implements Serializable {
     public String info(){
         return "WeatherParam isWind("+isWind+") isHum("+isHum+") isOver("+isOver+") isPress("+isPress+")";
     }
-
 }
+
+
