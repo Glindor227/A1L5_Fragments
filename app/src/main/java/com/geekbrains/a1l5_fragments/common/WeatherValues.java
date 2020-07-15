@@ -14,4 +14,12 @@ public class WeatherValues  implements Serializable {
         this.hum = hum;
         this.press = press;
     }
+
+    public WeatherValues() {
+        this.temp = "нет данных";
+        this.wind = "нет данных";
+        this.hum = "нет данных";
+        this.press = "нет данных";
+
+    }
 }
