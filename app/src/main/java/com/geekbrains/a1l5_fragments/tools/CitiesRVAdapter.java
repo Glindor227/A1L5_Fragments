@@ -1,4 +1,4 @@
-package com.geekbrains.a1l5_fragments;
+package com.geekbrains.a1l5_fragments.tools;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.fragments.CitiesFragment;
 
 import java.util.List;
 
 
-public class CitiesRVAdapter extends RecyclerView.Adapter<com.geekbrains.a1l5_fragments.CitiesRVAdapter.RVViewHolder> {
+public class CitiesRVAdapter extends RecyclerView.Adapter<CitiesRVAdapter.RVViewHolder> {
     private List<String> data;
     private CitiesFragment citiesFragment;
 
@@ -26,15 +27,15 @@ public class CitiesRVAdapter extends RecyclerView.Adapter<com.geekbrains.a1l5_fr
 
     @NonNull
     @Override
-    public com.geekbrains.a1l5_fragments.CitiesRVAdapter.RVViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public CitiesRVAdapter.RVViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.cities_element_layout, viewGroup,
                 false);
-        return new com.geekbrains.a1l5_fragments.CitiesRVAdapter.RVViewHolder(view);
+        return new CitiesRVAdapter.RVViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.geekbrains.a1l5_fragments.CitiesRVAdapter.RVViewHolder rvViewHolder, int i) {
+    public void onBindViewHolder(@NonNull CitiesRVAdapter.RVViewHolder rvViewHolder, int i) {
         final int iFinal = i;
         rvViewHolder.textViewCity.setOnClickListener(new View.OnClickListener() {
             @Override

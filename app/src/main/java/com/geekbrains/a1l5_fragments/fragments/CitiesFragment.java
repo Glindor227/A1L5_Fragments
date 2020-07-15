@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.geekbrains.a1l5_fragments.CitiesRVAdapter;
+import com.geekbrains.a1l5_fragments.tools.CitiesRVAdapter;
 import com.geekbrains.a1l5_fragments.CoatOfArmsActivity;
 import com.geekbrains.a1l5_fragments.R;
 import com.geekbrains.a1l5_fragments.common.WeatherParam;
